@@ -1,14 +1,15 @@
 {
-    "cSpell.words": [
-        "appbar",
-        "assests",
-        "Cupertino",
-        "firestore",
-        "flutterfire",
-        "Schyler",
-        "screenutil",
-        "Viewmodel"
-    ],
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "cSpell.words": [
+    "appbar",
+    "assests",
+    "Cupertino",
+    "firebasestorage",
+    "firestore",
+    "flutterfire",
+    "Schyler",
+    "screenutil",
+    "Viewmodel"
+  ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
