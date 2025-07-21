@@ -39,4 +39,13 @@ class AuthService {
       return null;
     }
   }
+
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+      log("User logged out successfully");
+    } catch (e) {
+      log("Logout Error: $e");
+    }
+  }
 }
