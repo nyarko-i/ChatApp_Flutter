@@ -52,6 +52,7 @@ class LoginScreen extends StatelessWidget {
                     onPressed: () async {
                       try {
                         await model.login();
+                        Navigator.pushReplacementNamed(context, home);
                       } catch (e) {
                         context.showSnackBar(e.toString());
                       }
