@@ -23,9 +23,15 @@ class UserModel {
     );
   }
 
+  // Convert UserModel to JSON string
   String toJson() => jsonEncode(toMap());
 
-  // Create a UserModel
+  // Create UserModel from JSON string
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(jsonDecode(source));
+
+  @override
+  String toString() {
+    return 'UserModel(uid: $uid, name: $name, email: $email, imageUrl: $imageUrl)';
+  }
 }

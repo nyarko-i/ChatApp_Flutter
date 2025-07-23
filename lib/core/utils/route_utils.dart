@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 class RouteUtils {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+    final args = settings.arguments;
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(builder: (context) => SplashScreen());
@@ -20,7 +21,9 @@ class RouteUtils {
 
       //Auth
       case home:
-        return MaterialPageRoute(builder: (context) => HomeScreen());
+        return MaterialPageRoute(
+          builder: (context) => HomeScreen(uid: args as String),
+        );
       case wrapper:
         return MaterialPageRoute(builder: (context) => Wrapper());
       default:
