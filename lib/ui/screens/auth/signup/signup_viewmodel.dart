@@ -1,12 +1,16 @@
 import 'dart:developer';
+import 'package:chat_app/core/enums/enums.dart';
+import 'package:chat_app/core/models/user_models.dart';
 import 'package:chat_app/core/other/base_viewmodel.dart';
 import 'package:chat_app/core/services/auth_service.dart';
+import 'package:chat_app/core/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupViewmodel extends BaseViewmodel {
   final AuthService _authService;
+  final DatabaseService _db;
 
-  SignupViewmodel(this._authService);
+  SignupViewmodel(this._authService, this._db);
 
   String name = '';
   String email = '';
@@ -39,10 +43,17 @@ class SignupViewmodel extends BaseViewmodel {
       name.isNotEmpty && email.isNotEmpty && password.isNotEmpty;
 
   Future<AuthResult> signup() async {
+    setState(ViewState.loading);
     try {
-      final user = await _authService.signup(email, password, name: name);
+      final res = await _authService.signup(email, password, name: name);
+      if (res != null) {
+        UserModel user = UserModel(uid: res.uid, name: name, email: email);
+        await _db.saveUser(user.toMap());
+      }
 
-      if (user != null) {
+      setState(ViewState.idle);
+
+      if (res != null) {
         return AuthResult(success: true);
       } else {
         return AuthResult(
@@ -54,6 +65,7 @@ class SignupViewmodel extends BaseViewmodel {
       log("Firebase Signup Error: ${e.code}");
       return AuthResult(success: false, message: _friendlyError(e.code));
     } catch (e) {
+      setState(ViewState.idle);
       log("Unexpected signup error: $e");
       return AuthResult(
         success: false,

@@ -1,3 +1,4 @@
+import 'package:chat_app/core/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -5,6 +6,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text("Home screen"),),);
+    return Scaffold(
+      body: Center(
+        child: InkWell(
+          onTap: () {
+            AuthService().logout();
+          },
+          child: Text("Welcome"),
+        ),
+      ),
+    );
   }
 }

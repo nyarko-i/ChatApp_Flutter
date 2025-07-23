@@ -1,4 +1,5 @@
 import 'package:chat_app/core/constants/strings.dart';
+import 'package:chat_app/core/enums/enums.dart';
 import 'package:chat_app/core/extension/widget_extension.dart';
 import 'package:chat_app/core/services/auth_service.dart';
 import 'package:chat_app/ui/screens/auth/login/login_viewmodel.dart';
@@ -48,15 +49,18 @@ class LoginScreen extends StatelessWidget {
                   ),
                   20.verticalSpace,
                   CustomButton(
+                    loading: model.state == ViewState.loading,
                     text: "Login",
-                    onPressed: () async {
-                      try {
-                        await model.login();
-                        Navigator.pushReplacementNamed(context, home);
-                      } catch (e) {
-                        context.showSnackBar(e.toString());
-                      }
-                    },
+                    onPressed: model.state == ViewState.loading
+                        ? null
+                        : () async {
+                            try {
+                              await model.login();
+                              Navigator.pushReplacementNamed(context, home);
+                            } catch (e) {
+                              context.showSnackBar(e.toString());
+                            }
+                          },
                   ),
                   20.verticalSpace,
                   Row(

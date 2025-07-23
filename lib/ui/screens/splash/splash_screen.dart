@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     _timer = Timer(Duration(seconds: 3), () {
-      Navigator.pushNamed(context, signup);
+      Navigator.pushNamed(context, wrapper);
     });
   }
 

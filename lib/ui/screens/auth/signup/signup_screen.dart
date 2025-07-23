@@ -1,5 +1,7 @@
 import 'package:chat_app/core/constants/strings.dart';
+import 'package:chat_app/core/enums/enums.dart';
 import 'package:chat_app/core/services/auth_service.dart';
+import 'package:chat_app/core/services/database_service.dart';
 import 'package:chat_app/ui/screens/auth/signup/signup_viewmodel.dart';
 import 'package:chat_app/ui/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,7 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SignupViewmodel(AuthService()),
+      create: (_) => SignupViewmodel(AuthService(), DatabaseService()),
       child: Consumer<SignupViewmodel>(
         builder: (context, model, _) {
           return Scaffold(
@@ -68,28 +70,31 @@ class SignupScreen extends StatelessWidget {
 
                   /// Sign Up Button
                   CustomButton(
+                    loading: model.state == ViewState.loading,
                     text: "Sign up",
-                    onPressed: () async {
-                      if (!model.passwordsMatch()) {
-                        context.showSnackBar("Passwords do not match.");
-                        return;
-                      }
-                      if (!model.isFormValid()) {
-                        context.showSnackBar("All fields are required.");
-                        return;
-                      }
+                    onPressed: model.state == ViewState.loading
+                        ? null
+                        : () async {
+                            if (!model.passwordsMatch()) {
+                              context.showSnackBar("Passwords do not match.");
+                              return;
+                            }
+                            if (!model.isFormValid()) {
+                              context.showSnackBar("All fields are required.");
+                              return;
+                            }
 
-                      final result = await model.signup();
+                            final result = await model.signup();
 
-                      if (context.mounted) {
-                        if (result.success) {
-                          context.showSnackBar("Signup successful!");
-                          Navigator.pushReplacementNamed(context, login);
-                        } else {
-                          context.showSnackBar(result.message);
-                        }
-                      }
-                    },
+                            if (context.mounted) {
+                              if (result.success) {
+                                context.showSnackBar("Signup successful!");
+                                Navigator.pop(context);
+                              } else {
+                                context.showSnackBar(result.message);
+                              }
+                            }
+                          },
                   ),
 
                   20.verticalSpace,
